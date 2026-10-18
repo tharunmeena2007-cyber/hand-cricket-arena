@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Hand Cricket Arena"
+description = "A real-time private multiplayer hand cricket game where friends create rooms, pick teams, choose Normal or Baseball rules, and compete in server-authoritative matches."
+version = "1.0.0"
+id = "artifacts/hand-cricket-arena"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20297
+
+[services.development]
+run = "pnpm --filter @workspace/hand-cricket-arena run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/hand-cricket-arena", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/hand-cricket-arena/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20297"
+BASE_PATH = "/"

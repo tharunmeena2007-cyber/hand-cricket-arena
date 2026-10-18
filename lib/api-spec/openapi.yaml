@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: arena
+    description: Hand Cricket Arena live service information
 paths:
   /healthz:
     get:
@@ -24,6 +26,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /arena/status:
+    get:
+      operationId: getArenaStatus
+      tags: [arena]
+      summary: Get live arena status
+      description: Returns current in-memory room and connected player counts.
+      responses:
+        "200":
+          description: Arena status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArenaStatus"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +48,26 @@ components:
           type: string
       required:
         - status
+    ArenaStatus:
+      type: object
+      properties:
+        activeRooms:
+          type: integer
+        connectedPlayers:
+          type: integer
+        maxPlayersPerRoom:
+          type: integer
+        maxPlayersPerTeam:
+          type: integer
+        modes:
+          type: array
+          items:
+            type: string
+            enum: [normal, baseball]
+      required:
+        - activeRooms
+        - connectedPlayers
+        - maxPlayersPerRoom
+        - maxPlayersPerTeam
+        - modes
 
